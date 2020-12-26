@@ -2,17 +2,27 @@ public class User {
     private String userName;//用户名字
     private String userId;//用户ID
     private String userPassWord;//用户密码
+    private String userPhone;//用户密码
     private Order order;//用户订单
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
 
     public User() {
 
     }
 
-    public User(String userName, String userId, String userPassWord, Order order) {
+    public User(String userName, String userId, String userPassWord, Order order,String userPhone) {
         this.userName = userName;
         this.userId = userId;
         this.userPassWord = userPassWord;
         this.order = order;
+        this.userPhone=userPhone;
     }
 
     public String getUserName() {
