@@ -7,20 +7,26 @@ public class jdWeb {
 
 
         Scanner scanner=new Scanner(System.in);
-
+        String id;//用户输入的用户名
+        String passWord;//用户输入的密码
+        boolean flag;//判断是否登录成功
 
         //实现登录功能
-        //实现循环判断功能
-        System.out.println("请输入账号");
-        String id=scanner.nextLine();
-        System.out.println("请输入密码");
-        String passWord=scanner.nextLine();
-        boolean flag=Landing(id,passWord);
-        if(flag){
-            System.out.println("登录成功");
-            System.out.println("欢迎登录媛多多系统");
-        }else{
-            System.out.println("登录失败");
+        //实现循环判断重新登录功能
+        while(true){
+            System.out.println("请输入账号");
+            id=scanner.nextLine();
+            System.out.println("请输入密码");
+            passWord=scanner.nextLine();
+
+            flag=Landing(id,passWord);
+            if(flag){
+                System.out.println("登录成功");
+                System.out.println("欢迎登录媛多多系统");
+                break;
+            }else{
+                System.out.println("登录失败,请重新输入");
+            }
         }
 
 
@@ -30,8 +36,7 @@ public class jdWeb {
     public static  boolean Landing(String userId,String passWord) throws ClassNotFoundException {
         boolean flag=false;
         //使用Excle登录
-        InputStream in=Class.forName("jdWeb").getResourceAsStream("/user.xlsx");
-        File file=new File("E:\\MyIdeaCode\\lanqiaoCode\\src\\user.xlsx");
+        InputStream in=Class.forName("jdWeb").getResourceAsStream("/user.xlsx");//代替了path的功能
         ReadExcel readExcel=new ReadExcel();
         User[] users=readExcel.readExcel(in);
         for (int i=0;i<users.length;i++){
