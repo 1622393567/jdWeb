@@ -1,14 +1,16 @@
 import java.io.File;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class jdWeb {
-    public static void main(String[] args){
+    public static void main(String[] args) throws ClassNotFoundException {
 
 
         Scanner scanner=new Scanner(System.in);
 
 
         //实现登录功能
+        //实现循环判断功能
         System.out.println("请输入账号");
         String id=scanner.nextLine();
         System.out.println("请输入密码");
@@ -25,16 +27,20 @@ public class jdWeb {
 
     }
     //使用方法封装判断用户是否登录成功
-    public static  boolean Landing(String userId,String passWord){
+    public static  boolean Landing(String userId,String passWord) throws ClassNotFoundException {
         boolean flag=false;
         //使用Excle登录
+        InputStream in=Class.forName("jdWeb").getResourceAsStream("/user.xlsx");
         File file=new File("E:\\MyIdeaCode\\lanqiaoCode\\src\\user.xlsx");
         ReadExcel readExcel=new ReadExcel();
-        User[] users=readExcel.readExcel(file);
+        User[] users=readExcel.readExcel(in);
         for (int i=0;i<users.length;i++){
             if(users[i].getUserId().equals(userId) &&users[i].getUserPassWord().equals(passWord)){
                 flag=true;
+
                 System.out.println("用户名为："+users[i].getUserName());
+                System.out.println("电话号码为："+users[i].getUserPhone());
+
             }
         }
         return flag;
