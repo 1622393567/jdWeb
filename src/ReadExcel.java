@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 
 public class ReadExcel {
-    public User[] readExcel(InputStream in) {
+    public User[] readExcelUser(InputStream in) {
         User users[] = null;
         try {
             XSSFWorkbook xw = new XSSFWorkbook(in);
@@ -41,6 +41,37 @@ public class ReadExcel {
             e.printStackTrace();
         }
         return users;
+    }
+    public Goods[] readExcelGOODS(InputStream in) {
+        Goods goods[] = null;
+        try {
+            XSSFWorkbook xw = new XSSFWorkbook(in);
+            XSSFSheet xs = xw.getSheetAt(0);
+            goods = new Goods[xs.getLastRowNum()];
+            for (int j = 1; j <= xs.getLastRowNum(); j++) {
+                XSSFRow row = xs.getRow(j);
+                Goods goods1 = new Goods();//每循环一次就把电子表格的一行的数据给对象赋值
+                for (int k = 0; k <= row.getLastCellNum(); k++) {
+                    XSSFCell cell = row.getCell(k);
+                    if (cell == null)
+                        continue;
+                    if (k == 0) {
+                        goods1.setGoodsID(this.getValue(cell));//给goodid属性赋值
+                    } else if (k == 1) {
+                        goods1.setGoodsName(this.getValue(cell));//给goodname属性赋值
+                    } else if (k == 2) {
+                        goods1.setGoodsPrice(this.getValue(cell));//给goodprice属性赋值
+                    } else if (k == 3) {
+                        goods1.setGoodsNum(this.getValue(cell));//给goodnum属性赋值
+                    }
+                }
+                goods[j-1] = goods1;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return goods;
     }
 
     private String getValue(XSSFCell cell) {

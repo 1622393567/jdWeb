@@ -23,6 +23,9 @@ public class jdWeb {
             if(flag){
                 System.out.println("登录成功");
                 System.out.println("欢迎登录媛多多系统");
+                //显示商品
+                System.out.println("以下是商品列表，请选择你所需要的商品并输入商品id，即可购买");
+                goodlist();
                 break;
             }else{
                 System.out.println("登录失败,请重新输入");
@@ -32,13 +35,27 @@ public class jdWeb {
 
 
     }
+    //创建方法 显示商品列表
+    public static void goodlist() throws ClassNotFoundException {
+        InputStream in=Class.forName("jdWeb").getResourceAsStream("/goods.xlsx");//代替了path的功能
+        ReadExcel readExcel=new ReadExcel();
+        Goods[] goods=readExcel.readExcelGOODS(in);
+        System.out.println("商品ID       商品名称        商品单价        商品数量");
+        for (int i=0;i<goods.length;i++){
+            System.out.println(goods[i].getGoodsID()+
+                    "            "+goods[i].getGoodsName()+
+                    "             "+goods[i].getGoodsPrice()+
+                    "             "+ goods[i].getGoodsNum()
+            );
+        }
+        }
     //使用方法封装判断用户是否登录成功
     public static  boolean Landing(String userId,String passWord) throws ClassNotFoundException {
         boolean flag=false;
         //使用Excle登录
         InputStream in=Class.forName("jdWeb").getResourceAsStream("/user.xlsx");//代替了path的功能
         ReadExcel readExcel=new ReadExcel();
-        User[] users=readExcel.readExcel(in);
+        User[] users=readExcel.readExcelUser(in);
         for (int i=0;i<users.length;i++){
             if(users[i].getUserId().equals(userId) &&users[i].getUserPassWord().equals(passWord)){
                 flag=true;
