@@ -3,16 +3,22 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class jdWeb {
+   static Goods[] goodses=new Goods[5];//购物车数组
+    static int count=0;
     public static void main(String[] args) throws ClassNotFoundException {
-
-
         Scanner scanner=new Scanner(System.in);
         String id;//用户输入的用户名
         String passWord;//用户输入的密码
         boolean flag;//判断是否登录成功
+        InputStream ingoods=Class.forName("jdWeb").getResourceAsStream("/goods.xlsx");//代替了path的功能
+        ReadExcel readExcelgoods=new ReadExcel();//读取表格数据
+        //这两行代码为解决输入流输出流的办法
+
 
         //实现登录功能
         //实现循环判断重新登录功能
+        //实现商品列表显示功能
+        //实现商品加入购物车功能
         while(true){
             System.out.println("请输入账号");
             id=scanner.nextLine();
@@ -25,7 +31,12 @@ public class jdWeb {
                 System.out.println("欢迎登录媛多多系统");
                 //显示商品
                 System.out.println("以下是商品列表，请选择你所需要的商品并输入商品id，即可购买");
-                goodlist();
+                goodlist();//显示商品清单
+                System.out.println("请选择你所需要的商品并输入商品id，即可购买");
+                String goodsId=scanner.next();
+
+               sercherById(goodsId);//调用加入商品方法
+
                 break;
             }else{
                 System.out.println("登录失败,请重新输入");
@@ -35,17 +46,31 @@ public class jdWeb {
 
 
     }
+    //创建方法，返回一个商品
+    public static void sercherById (String id)throws ClassNotFoundException {
+        InputStream ingoods=Class.forName("jdWeb").getResourceAsStream("/goods.xlsx");//代替了path的功能
+        ReadExcel readExcelgoods=new ReadExcel();//读取表格数据
+        //这两行代码为解决输入流输出流的办法
+        Goods goods=readExcelgoods.reserchById(id,ingoods);
+        if(goods!=null) {
+            goodses[count] = goods;
+            System.out.println("商品加入购物车成功，加入商品为" + goodses[count].getGoodsName());
+            count++;
+        }else {
+            System.out.println("您选择的商品不存在，请重新选择");
+        }
+    }
     //创建方法 显示商品列表
     public static void goodlist() throws ClassNotFoundException {
         InputStream in=Class.forName("jdWeb").getResourceAsStream("/goods.xlsx");//代替了path的功能
         ReadExcel readExcel=new ReadExcel();
         Goods[] goods=readExcel.readExcelGOODS(in);
-        System.out.println("商品ID       商品名称        商品单价        商品数量");
+        System.out.println("商品ID\t商品名称\t商品单价\t商品数量");
         for (int i=0;i<goods.length;i++){
             System.out.println(goods[i].getGoodsID()+
-                    "            "+goods[i].getGoodsName()+
-                    "             "+goods[i].getGoodsPrice()+
-                    "             "+ goods[i].getGoodsNum()
+                    "\t"+goods[i].getGoodsName()+
+                    "\t"+goods[i].getGoodsPrice()+
+                    "\t"+ goods[i].getGoodsNum()
             );
         }
         }

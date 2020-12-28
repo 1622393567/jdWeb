@@ -73,7 +73,39 @@ public class ReadExcel {
         }
         return goods;
     }
+    //返回找到的商品
+    public Goods reserchById(String id,InputStream in) {
+        try {
+            XSSFWorkbook xw = new XSSFWorkbook(in);
+            XSSFSheet xs = xw.getSheetAt(0);
+            for (int j = 1; j <= xs.getLastRowNum(); j++) {
+                XSSFRow row = xs.getRow(j);
+                Goods goods1 = new Goods();//每循环一次就把电子表格的一行的数据给对象赋值
+                for (int k = 0; k <= row.getLastCellNum(); k++) {
+                    XSSFCell cell = row.getCell(k);
+                    if (cell == null)
+                        continue;
+                    if (k == 0) {
+                        goods1.setGoodsID(this.getValue(cell));//给goodid属性赋值
+                    } else if (k == 1) {
+                        goods1.setGoodsName(this.getValue(cell));//给goodname属性赋值
+                    } else if (k == 2) {
+                        goods1.setGoodsPrice(this.getValue(cell));//给goodprice属性赋值
+                    } else if (k == 3) {
+                        goods1.setGoodsNum(this.getValue(cell));//给goodnum属性赋值
+                    }
 
+                }
+                if(goods1.getGoodsID().equals(id)){
+                    return goods1;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     private String getValue(XSSFCell cell) {
         String value;
         CellType type = cell.getCellTypeEnum();
