@@ -19,6 +19,7 @@ public class jdWeb {
         //实现循环判断重新登录功能
         //实现商品列表显示功能
         //实现商品加入购物车功能
+        //实现多次加入购物车的功能，并显示购物车商品
         while(true){
             System.out.println("请输入账号");
             id=scanner.nextLine();
@@ -33,9 +34,26 @@ public class jdWeb {
                 System.out.println("以下是商品列表，请选择你所需要的商品并输入商品id，即可购买");
                 goodlist();//显示商品清单
                 System.out.println("请选择你所需要的商品并输入商品id，即可购买");
+                System.out.println("请输入商品编号");
                 String goodsId=scanner.next();
-
                sercherById(goodsId);//调用加入商品方法
+                //第一次购买结束
+                //开始重复购买
+                int keep=0;
+                while(true){
+                    System.out.println("请问是否继续购买，继续购买请输入0，否则输入任意数字结束购买并且显示购物车商品");
+                     keep=scanner.nextInt();
+                    if (keep==0){
+                        System.out.println("请输入商品编号");
+                        goodsId=scanner.next();
+                        sercherById(goodsId);
+                    }else{
+                        System.out.println("结束购买,显示购物车已经购买商品");
+                        break;
+                    }
+                }
+                //显示购物车商品
+                GoodsesToString();
 
                 break;
             }else{
@@ -46,6 +64,22 @@ public class jdWeb {
 
 
     }
+    //创建方法 ，返回购物车中的商品
+
+
+    public static void GoodsesToString() {
+        System.out.println("您已经购买的商品如下");
+            for (int i=0;i<goodses.length;i++){
+                if(goodses[i]!=null){
+                    int flag=i+1;
+                    System.out.println("第"+flag+"件:"+goodses[i].getGoodsName());
+                }else{
+                    break;
+                }
+            }
+
+    }
+
     //创建方法，返回一个商品
     public static void sercherById (String id)throws ClassNotFoundException {
         InputStream ingoods=Class.forName("jdWeb").getResourceAsStream("/goods.xlsx");//代替了path的功能
