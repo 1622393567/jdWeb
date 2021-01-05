@@ -14,13 +14,18 @@ public class jdWeb {
         ReadExcel readExcelgoods=new ReadExcel();//读取表格数据
         //这两行代码为解决输入流输出流的办法
 
+        CreateOreder createOreder=new CreateOreder();//创建清单
+        //测试一下
+        createOreder.IOreder(goodses);
+
 
         //实现登录功能
         //实现循环判断重新登录功能
         //实现商品列表显示功能
         //实现商品加入购物车功能
         //实现多次加入购物车的功能，并显示购物车商品
-        while(true){
+        //实现下订单功能？？
+        /* while(true){
             System.out.println("请输入账号");
             id=scanner.nextLine();
             System.out.println("请输入密码");
@@ -55,12 +60,13 @@ public class jdWeb {
                 //显示购物车商品
                 GoodsesToString();
 
+
                 break;
             }else{
                 System.out.println("登录失败,请重新输入");
             }
         }
-
+     */
 
 
     }
