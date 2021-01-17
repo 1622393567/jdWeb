@@ -9,64 +9,89 @@ public class jdWeb {
         Scanner scanner=new Scanner(System.in);
         String id;//用户输入的用户名
         String passWord;//用户输入的密码
-        boolean flag;//判断是否登录成功
+        User userFlag=new User();//判断是否登录成功
+        boolean flag=true;//程序结束标志
         InputStream ingoods=Class.forName("jdWeb").getResourceAsStream("/goods.xlsx");//代替了path的功能
         ReadExcel readExcelgoods=new ReadExcel();//读取表格数据
         //这两行代码为解决输入流输出流的办法
 
         CreateOreder createOreder=new CreateOreder();//创建清单
-        //测试一下
-        createOreder.IOreder(goodses);
-
 
         //实现登录功能
         //实现循环判断重新登录功能
         //实现商品列表显示功能
         //实现商品加入购物车功能
         //实现多次加入购物车的功能，并显示购物车商品
-        //实现下订单功能？？
-        /* while(true){
+        //实现下订单功能,并且创建一个订单清单Xlsx文件
+        //使用SWICH选择语句来改善代码
+
+         while(true){
             System.out.println("请输入账号");
             id=scanner.nextLine();
             System.out.println("请输入密码");
             passWord=scanner.nextLine();
 
-            flag=Landing(id,passWord);
-            if(flag){
+            userFlag=Landing(id,passWord);
+            if (userFlag!=null){
                 System.out.println("登录成功");
+                System.out.println("用户名为："+userFlag.getUserName());
+                System.out.println("电话号码为："+userFlag.getUserPhone());
                 System.out.println("欢迎登录媛多多系统");
-                //显示商品
-                System.out.println("以下是商品列表，请选择你所需要的商品并输入商品id，即可购买");
-                goodlist();//显示商品清单
-                System.out.println("请选择你所需要的商品并输入商品id，即可购买");
-                System.out.println("请输入商品编号");
-                String goodsId=scanner.next();
-               sercherById(goodsId);//调用加入商品方法
-                //第一次购买结束
-                //开始重复购买
-                int keep=0;
-                while(true){
-                    System.out.println("请问是否继续购买，继续购买请输入0，否则输入任意数字结束购买并且显示购物车商品");
-                     keep=scanner.nextInt();
-                    if (keep==0){
-                        System.out.println("请输入商品编号");
-                        goodsId=scanner.next();
-                        sercherById(goodsId);
-                    }else{
-                        System.out.println("结束购买,显示购物车已经购买商品");
-                        break;
+                System.out.println("请按照功能键选择您所需要的功能");
+                while (flag){
+                    System.out.println("按 1 键 ：显示商品列表");
+                    System.out.println("按 2 键 ：选择商品加入购物车");
+                    System.out.println("按 3 键 ：显示已经加入购物车的商品");
+                    System.out.println("按 4 键 ：结束购买，并且显示已经购买的商品，创建购物清单");
+                    System.out.println("请输入");
+                    int keys=scanner.nextInt();
+                    switch (keys){
+                        case 1 ://显示商品列表
+                            System.out.println("以下是商品列表");
+                            goodlist();//显示商品清单
+                            break;
+                        case 2 ://购买商品
+                            System.out.println("请选择你所需要的商品并输入商品id，即可购买");
+                            System.out.println("请输入商品编号");
+                            String goodsId=scanner.next();
+                            sercherById(goodsId);//调用加入商品方法
+                            break;
+
+                        case 3 : //显示购物车商品
+                            GoodsesToString();
+                            break;
+                        case 4 ://结束购买，并且创建清单
+                            GoodsesToString();
+                            CreatOreders(userFlag,"1");
+                            flag=false;
+                            break;
+
                     }
+
                 }
-                //显示购物车商品
-                GoodsesToString();
 
 
                 break;
+
             }else{
                 System.out.println("登录失败,请重新输入");
             }
+
+
         }
-     */
+
+
+
+    }
+
+    //方法，实现创建订单
+    public static void CreatOreders(User user,String i){
+        Order order=new Order();
+        order.setGoods(goodses);
+        order.setId(i);
+        order.setUser(user);
+        CreateOreder createOreder=new CreateOreder();//创建清单
+        createOreder.IOreder(order);
 
 
     }
@@ -115,21 +140,18 @@ public class jdWeb {
         }
         }
     //使用方法封装判断用户是否登录成功
-    public static  boolean Landing(String userId,String passWord) throws ClassNotFoundException {
-        boolean flag=false;
+    public static  User Landing(String userId,String passWord) throws ClassNotFoundException {
+        User flag=new User();
         //使用Excle登录
         InputStream in=Class.forName("jdWeb").getResourceAsStream("/user.xlsx");//代替了path的功能
         ReadExcel readExcel=new ReadExcel();
         User[] users=readExcel.readExcelUser(in);
         for (int i=0;i<users.length;i++){
             if(users[i].getUserId().equals(userId) &&users[i].getUserPassWord().equals(passWord)){
-                flag=true;
 
-                System.out.println("用户名为："+users[i].getUserName());
-                System.out.println("电话号码为："+users[i].getUserPhone());
-
+                return flag=users[i];
             }
         }
-        return flag;
+        return null;
     }
 }

@@ -1,58 +1,29 @@
 public class Order {
-    private int orderId;//订单编号
-    private String orderGoods;//订单商品名称
-    private double goodsPrrice;//商品单价
-    private double orderPrice;//订单价格
-    private  int  count;//订单数量
+    private Goods[] goods;//购买的全部商品
+    private User user;//购买人
+    private String id;//订单ID
 
-    public Order(){
-
-    }
-    public int getOrderId() {
-        return orderId;
+    public Goods[] getGoods() {
+        return goods;
     }
 
-    public Order(int orderId, String orderGoods, double goodsPrrice, double orderPrice, int count) {
-        this.orderId = orderId;
-        this.orderGoods = orderGoods;
-        this.goodsPrrice = goodsPrrice;
-        this.orderPrice = orderPrice;
-        this.count = count;
+    public void setGoods(Goods[] goods) {
+        this.goods = goods;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public User getUser() {
+        return user;
     }
 
-    public String getOrderGoods() {
-        return orderGoods;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setOrderGoods(String orderGoods) {
-        this.orderGoods = orderGoods;
+    public String getId() {
+        return id;
     }
 
-    public double getGoodsPrrice() {
-        return goodsPrrice;
-    }
-
-    public void setGoodsPrrice(double goodsPrrice) {
-        this.goodsPrrice = goodsPrrice;
-    }
-
-    public double getOrderPrice() {
-        return orderPrice;
-    }
-
-    public void setOrderPrice(double orderPrice) {
-        this.orderPrice = orderPrice;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
+    public void setId(String id) {
+        this.id = id;
     }
 }
